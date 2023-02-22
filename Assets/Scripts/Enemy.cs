@@ -9,11 +9,12 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     #region Movement Variables
     [SerializeField]
-    private float movementSpeed = 3f;
-    private float patrolMovementSpeed = 3f;
-    private float maxChaseMovementSpeed = 5f;
+    private float movementSpeed = 1.5f;
+    private float patrolMovementSpeed = 1.5f;
+    private float maxChaseMovementSpeed = 4f;
     private float elapsedChaseTime = 0;
     private float timeBeforeSpeedUp = 2f;
+    private float currentDirection;
     #endregion
     #region Patrol Variables
     private Vector3 initialPosition;
@@ -23,6 +24,9 @@ public class Enemy : MonoBehaviour
     private Vector3 currentDestination;
     private float distanceThreshold = 1f;
     #endregion
+    #region Enemy Animation 
+    private Animator animationController;
+    #endregion 
 
     void Awake()
     {
@@ -30,6 +34,7 @@ public class Enemy : MonoBehaviour
         initialPosition = transform.position;   
         otherWaypoint = transform.Find("DestinationWaypoint").transform.position;
         currentDestination = otherWaypoint;
+        animationController = GetComponent<Animator>();
     }
 
     void Update()
@@ -39,11 +44,8 @@ public class Enemy : MonoBehaviour
             ChasePlayer();
         } else
         {
-            elapsedChaseTime = 0;
-            movementSpeed = patrolMovementSpeed;
             PatrolState();
         }
-        Debug.Log("Movement Speed: " + movementSpeed);
     }
 
     void ChasePlayer()
@@ -61,6 +63,8 @@ public class Enemy : MonoBehaviour
 
     void PatrolState()
     {
+        elapsedChaseTime = 0;
+        movementSpeed = patrolMovementSpeed;
         /* In order to set patrol waypoints. 
          * Inside of enemy hierarchy, drag child object "DestinationWaypoint" to desired location */
         if (Vector3.Distance(transform.position, currentDestination) > distanceThreshold)

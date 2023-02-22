@@ -26,13 +26,16 @@ public class PlayerController : MonoBehaviour
     private bool holding_item1;
     private KeyCode keyToPickUp = KeyCode.F;
     #endregion
-
+    #region Animation Variables
+    private Animator animationController;
+    #endregion
     #endregion
 
     #region Code
     void Awake()
     {
         movementSpeed = defaultMovementSpeed;
+        animationController = GetComponent<Animator>();
     }
     void Update()
     {
@@ -100,5 +103,5 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    #endregion
 }
+    #endregion
