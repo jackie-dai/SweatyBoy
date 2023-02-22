@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject item1;
     private bool holding_item1;
-
+    private KeyCode keyToPickUp = KeyCode.F;
     #endregion
 
     #endregion
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     void ProcessMovement()
     {
-        /* Handles spring */
+        /* Handles sprint */
         if (Input.GetKey(sprintBtn))
         {
             movementSpeed = defaultSprintSpeed;
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
 
     void ProcessKeys()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(keyToPickUp))
         {
             if (holding_item1 == false)
             {
