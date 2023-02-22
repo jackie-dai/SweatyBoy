@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -12,9 +13,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float movementSpeed;
 
+    private UnityEngine.Vector3 currDirection;
+
     /* KEYBINDS */
     KeyCode sprintBtn = KeyCode.LeftShift;
     KeyCode crouchBtn = KeyCode.LeftControl;
+    #endregion
+
+    #region Item Variables
+    [SerializeField]
+    private GameObject item1;
+    private bool holding_item1;
+
     #endregion
 
     #endregion
@@ -27,6 +37,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         ProcessMovement();
+        ProcessKeys();
     }
 
     void ProcessMovement()
@@ -42,9 +53,40 @@ public class PlayerController : MonoBehaviour
 
         float horizontalinput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        Vector3 direction = new Vector3(horizontalinput, verticalInput, 0);
+        UnityEngine.Vector3 direction = new UnityEngine.Vector3(horizontalinput, verticalInput, 0);
+        if (direction != UnityEngine.Vector3.zero)
+        {
+            currDirection = direction;
+        }
 
         transform.Translate(direction * movementSpeed * Time.deltaTime);
+    }
+
+    void ProcessKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (holding_item1 == false)
+            {
+                RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, currDirection.normalized, 1);
+                //Debug.Log("Pressed F " + currDirection + " " + hit.transform.name);
+                foreach (RaycastHit2D hit in hits)
+                {
+                    if (hit.transform.CompareTag("Item1"))
+                    {
+                        holding_item1 = true;
+                        Destroy(hit.transform.gameObject);
+                    }
+                }
+            } else
+            {
+                if (holding_item1)
+                {
+                    Object.Instantiate(item1, transform.position + currDirection.normalized, UnityEngine.Quaternion.identity);
+                    holding_item1 = false;
+                }
+            }
+        }
     }
     #endregion
 }
