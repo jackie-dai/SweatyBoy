@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float patrolDistance;
     private Vector3 destinationWaypoint;
+    private float distanceThreshold = 2f;
     #endregion
 
     void Awake()
@@ -33,17 +34,16 @@ public class Enemy : MonoBehaviour
             rb.velocity = directionToPlayer.normalized * movementSpeed;
         } else
         {
-            rb.velocity = Vector2.zero;
+            rb.velocity = Vector3.zero;
         }
     }
 
     void PatrolState()
     {
-        while (transform.position != destinationWaypoint)
-        { 
-            Vector3 directionToWaypoint = destinationWaypoint - transform.position;
-            // Will finish later
-        }
+        
+        Debug.Log(Vector3.Distance(transform.position, destinationWaypoint));
+        Vector3 directionToWaypoint = destinationWaypoint - transform.position;
+        rb.velocity = directionToWaypoint.normalized * movementSpeed;
     }
     
     /* HELPER FUNCTIONS */
