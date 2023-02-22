@@ -10,40 +10,73 @@ public class Enemy : MonoBehaviour
     #region Movement Variables
     [SerializeField]
     private float movementSpeed = 3f;
+    private float patrolMovementSpeed = 3f;
+    private float maxChaseMovementSpeed = 5f;
+    private float elapsedChaseTime = 0;
+    private float timeBeforeSpeedUp = 2f;
     #endregion
     #region Patrol Variables
     private Vector3 initialPosition;
     [SerializeField]
     private float patrolDistance;
-    private Vector3 destinationWaypoint;
-    private float distanceThreshold = 2f;
+    private Vector3 otherWaypoint;
+    private Vector3 currentDestination;
+    private float distanceThreshold = 1f;
     #endregion
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         initialPosition = transform.position;   
-        destinationWaypoint = transform.Find("DestinationWaypoint").transform.position;
+        otherWaypoint = transform.Find("DestinationWaypoint").transform.position;
+        currentDestination = otherWaypoint;
     }
 
     void Update()
     {
         if (seePlayer)
         {
-            Vector3 directionToPlayer = playerPosition.position - transform.position;
-            rb.velocity = directionToPlayer.normalized * movementSpeed;
+            ChasePlayer();
         } else
         {
-            rb.velocity = Vector3.zero;
+            elapsedChaseTime = 0;
+            movementSpeed = patrolMovementSpeed;
+            PatrolState();
         }
+        Debug.Log("Movement Speed: " + movementSpeed);
+    }
+
+    void ChasePlayer()
+    {
+        /* Enemy speeds up the longer in chase mode */
+        if (elapsedChaseTime > timeBeforeSpeedUp && movementSpeed < maxChaseMovementSpeed)
+        {
+            movementSpeed += 0.1f;
+        }
+
+        Vector3 directionToPlayer = playerPosition.position - transform.position;
+        rb.velocity = directionToPlayer.normalized * movementSpeed;
+        elapsedChaseTime += Time.deltaTime;
     }
 
     void PatrolState()
     {
-        
-        Debug.Log(Vector3.Distance(transform.position, destinationWaypoint));
-        Vector3 directionToWaypoint = destinationWaypoint - transform.position;
-        rb.velocity = directionToWaypoint.normalized * movementSpeed;
+        /* In order to set patrol waypoints. 
+         * Inside of enemy hierarchy, drag child object "DestinationWaypoint" to desired location */
+        if (Vector3.Distance(transform.position, currentDestination) > distanceThreshold)
+        {
+            Vector3 directionToWaypoint = currentDestination - transform.position;
+            rb.velocity = directionToWaypoint.normalized * movementSpeed;
+        } else
+        {
+            if (currentDestination == otherWaypoint)
+            {
+                currentDestination = initialPosition;
+            } else
+            {
+                currentDestination = otherWaypoint;
+            }
+        }
     }
     
     /* HELPER FUNCTIONS */
