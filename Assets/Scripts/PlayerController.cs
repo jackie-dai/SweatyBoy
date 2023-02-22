@@ -76,14 +76,26 @@ public class PlayerController : MonoBehaviour
                     {
                         holding_item1 = true;
                         Destroy(hit.transform.gameObject);
+                        return;
                     }
                 }
             } else
             {
                 if (holding_item1)
                 {
+                    RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, currDirection.normalized, 1);
+                    foreach (RaycastHit2D hit in hits)
+                    {
+                        if (hit.transform.CompareTag("ItemSlot"))
+                        {
+                            holding_item1 = hit.transform.GetComponent<ItemHolder>().HandleItem(item1);
+                            Debug.Log("You placed an item " + !holding_item1);
+                            return;
+                        }
+                    }
                     Object.Instantiate(item1, transform.position + currDirection.normalized, UnityEngine.Quaternion.identity);
                     holding_item1 = false;
+                    
                 }
             }
         }
