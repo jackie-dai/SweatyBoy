@@ -68,6 +68,10 @@ public class Enemy : MonoBehaviour
         {
             animationController.SetBool("Running", false);
         }
+        if (animationController.GetCurrentAnimatorStateInfo(0).IsName("Transform"))
+        {
+            rb.velocity = UnityEngine.Vector3.zero;
+        }
     }
 
     void DirectionFacing()
