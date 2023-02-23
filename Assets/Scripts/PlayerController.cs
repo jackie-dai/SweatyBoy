@@ -122,7 +122,8 @@ public class PlayerController : MonoBehaviour
                             return;
                         }
                     }
-                    Object.Instantiate(item1, transform.position + currDirection.normalized, UnityEngine.Quaternion.identity);
+                    UnityEngine.Vector3 temp = currDirection.normalized * 0.5f;
+                    Object.Instantiate(item1, transform.position + temp, UnityEngine.Quaternion.identity);
                     holding_item1 = false;
                     
                 }
