@@ -131,7 +131,17 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D coll)
+    {
+        
+        if (coll.gameObject.CompareTag("Player"))
+        {
+            GameObject gm = GameObject.FindWithTag("GameController");
+            gm.GetComponent<GameManager>().LoseGame();
+        }
+    }
+
     /* HELPER FUNCTIONS */
     public void GetPlayer(Transform player)
     {

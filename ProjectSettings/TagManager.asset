@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Enemy
   - Item1
+  - ItemSlot
+  - Closet
   layers:
   - Default
   - TransparentFX
@@ -40,12 +42,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Background
-    uniqueID: 234917357
-    locked: 0
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Foreground
-    uniqueID: 2003249787
     locked: 0

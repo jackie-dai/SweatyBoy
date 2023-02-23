@@ -8,4 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Jackie.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 84e7c1301b4f19a45992615a6da2f171
+  - enabled: 1
+    path: Assets/Scenes/Opening.unity
+    guid: 2189bde1c1fe64d47a8a1a8da891f329
+  - enabled: 1
+    path: Assets/Scenes/Anders.unity
+    guid: e8c8d14673b47ae4388b64f9dae1dfe6
+  - enabled: 1
+    path: Assets/Scenes/DeathScreen.unity
+    guid: 133f3529f5f11d148bd721e2747a643f
   m_configObjects: {}

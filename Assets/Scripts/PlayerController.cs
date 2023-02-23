@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     private GameObject item1;
     private bool holding_item1;
     private KeyCode keyToPickUp = KeyCode.F;
+    private KeyCode keyToHideUp = KeyCode.G;
     #endregion
     #region Animation Variables
     private Animator animationController;
@@ -108,7 +109,8 @@ public class PlayerController : MonoBehaviour
                         return;
                     }
                 }
-            } else
+            }
+            else
             {
                 if (holding_item1)
                 {
@@ -125,10 +127,23 @@ public class PlayerController : MonoBehaviour
                     UnityEngine.Vector3 temp = currDirection.normalized * 0.5f;
                     Object.Instantiate(item1, transform.position + temp, UnityEngine.Quaternion.identity);
                     holding_item1 = false;
-                    
+
                 }
             }
         }
-    }
+        else if (Input.GetKeyDown(keyToHideUp))
+        {
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, currDirection.normalized, 1);
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.transform.CompareTag("Closet"))
+                {
+                    hit.transform.gameObject.GetComponent<ClosetScript>().SetPlayerStore(this.gameObject);
+                    this.gameObject.SetActive(false);
+                    return;
+                }
+            }
+        }
+        }
 }
     #endregion
