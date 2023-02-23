@@ -14,7 +14,7 @@ public class ClosetScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(player_store != null && Input.GetKeyDown(KeyCode.G))
+        if(player_store != null && Input.GetKeyDown(KeyCode.E))
         {
             player_store.SetActive(true);
             player_store = null;

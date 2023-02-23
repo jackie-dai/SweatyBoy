@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     private GameObject item1;
     private bool holding_item1;
     private KeyCode keyToPickUp = KeyCode.F;
-    private KeyCode keyToHideUp = KeyCode.G;
+    private KeyCode keyToHideUp = KeyCode.E;
     #endregion
     #region Animation Variables
     private Animator animationController;
