@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
     #endregion
     #region Animation Variables
     private Animator animationController;
+    private bool facing_right;
+    public bool chased;
     #endregion
     #endregion
 
@@ -36,32 +38,56 @@ public class PlayerController : MonoBehaviour
     {
         movementSpeed = defaultMovementSpeed;
         animationController = GetComponent<Animator>();
+        facing_right = false;
+        chased = false;
     }
     void Update()
     {
         ProcessMovement();
         ProcessKeys();
+        animationController.SetBool("Chased", chased);
     }
 
     void ProcessMovement()
     {
         /* Handles sprint */
-        if (Input.GetKey(sprintBtn))
-        {
-            movementSpeed = defaultSprintSpeed;
-        } else
-        {
-            movementSpeed = defaultMovementSpeed;
-        }
-
         float horizontalinput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         UnityEngine.Vector3 direction = new UnityEngine.Vector3(horizontalinput, verticalInput, 0);
         if (direction != UnityEngine.Vector3.zero)
         {
             currDirection = direction;
+            animationController.SetBool("Moving", true);
+            if (Input.GetKey(sprintBtn))
+            {
+                movementSpeed = defaultSprintSpeed;
+                animationController.SetBool("Running", true);
+            }
+            else
+            {
+                movementSpeed = defaultMovementSpeed;
+                animationController.SetBool("Running", false);
+            }
+        } else
+        {
+            animationController.SetBool("Moving", false);
         }
-
+        animationController.SetFloat("Xdir", direction.x);
+        animationController.SetFloat("Ydir", direction.y);
+        if(facing_right == false && direction.x > 0)
+        {
+            facing_right = true;
+            UnityEngine.Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
+        } else if(facing_right == true && direction.x <= 0)
+        {
+            facing_right = false;
+            UnityEngine.Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
+            transform.localRotation = UnityEngine.Quaternion.Euler(0, 0, 0);
+        }
         transform.Translate(direction * movementSpeed * Time.deltaTime);
     }
 

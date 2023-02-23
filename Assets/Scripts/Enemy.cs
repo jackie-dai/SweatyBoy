@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
     #endregion
     #region Enemy Animation 
     private Animator animationController;
+    private bool right_facing;
     #endregion 
 
     void Awake()
@@ -35,6 +36,7 @@ public class Enemy : MonoBehaviour
         otherWaypoint = transform.Find("DestinationWaypoint").transform.position;
         currentDestination = otherWaypoint;
         animationController = GetComponent<Animator>();
+        right_facing = false;
     }
 
     void Update()
@@ -45,6 +47,45 @@ public class Enemy : MonoBehaviour
         } else
         {
             PatrolState();
+        }
+        DirectionFacing();
+        HandleMovementAnimation();
+    }
+
+    private void HandleMovementAnimation()
+    {
+        if (rb.velocity.sqrMagnitude > 0)
+        {
+            animationController.SetBool("Moving", true);
+        } else
+        {
+            animationController.SetBool("Moving", false);
+        }
+        if (rb.velocity.sqrMagnitude > 1)
+        {
+            animationController.SetBool("Running", true);
+        } else
+        {
+            animationController.SetBool("Running", false);
+        }
+    }
+
+    void DirectionFacing()
+    {
+        if (right_facing == false && rb.velocity.x > 0)
+        {
+            right_facing = true;
+            UnityEngine.Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
+        }
+        else if (right_facing == true && rb.velocity.x <= 0)
+        {
+            right_facing = false;
+            UnityEngine.Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
+            transform.localRotation = UnityEngine.Quaternion.Euler(0, 0, 0);
         }
     }
 
@@ -57,6 +98,8 @@ public class Enemy : MonoBehaviour
         }
 
         Vector3 directionToPlayer = playerPosition.position - transform.position;
+        animationController.SetFloat("Xdir", directionToPlayer.x);
+        animationController.SetFloat("Ydir", directionToPlayer.y);
         rb.velocity = directionToPlayer.normalized * movementSpeed;
         elapsedChaseTime += Time.deltaTime;
     }
@@ -69,8 +112,10 @@ public class Enemy : MonoBehaviour
          * Inside of enemy hierarchy, drag child object "DestinationWaypoint" to desired location */
         if (Vector3.Distance(transform.position, currentDestination) > distanceThreshold)
         {
-            Vector3 directionToWaypoint = currentDestination - transform.position;
-            rb.velocity = directionToWaypoint.normalized * movementSpeed;
+            Vector3 directionToWaypoint = (currentDestination - transform.position).normalized;
+            rb.velocity = directionToWaypoint * movementSpeed;
+            animationController.SetFloat("Xdir", directionToWaypoint.x);
+            animationController.SetFloat("Ydir", directionToWaypoint.y);
         } else
         {
             if (currentDestination == otherWaypoint)

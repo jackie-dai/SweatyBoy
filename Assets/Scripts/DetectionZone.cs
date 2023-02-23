@@ -6,11 +6,13 @@ public class DetectionZone : MonoBehaviour
 {
     #region Variables
     private Enemy enemy;
+    private Animator animator;
     #endregion
 
     void Awake()
     {
         enemy = GetComponentInParent<Enemy>();
+        animator = GetComponentInParent<Animator>();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -19,6 +21,8 @@ public class DetectionZone : MonoBehaviour
         {
             enemy.DetectPlayer();
             enemy.GetPlayer(other.transform);
+            animator.SetTrigger("Transform");
+            other.GetComponent<PlayerController>().chased = true;
         }
     }
 
@@ -28,6 +32,7 @@ public class DetectionZone : MonoBehaviour
         {
             enemy.ResetDetectPlayer();
             Debug.Log("Exit");
+            other.GetComponent<PlayerController>().chased = false;
         }
     }
 
