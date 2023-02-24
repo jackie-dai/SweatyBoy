@@ -45,10 +45,10 @@ public class ItemHolder : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Items held: " + holdingItem);
+        //Debug.Log("Items held: " + holdingItem);
         if (holdingItem >= 3)
         {
-            Debug.Log("Door is open");
+            //Debug.Log("Door is open");
             closedDoor.OpenDoor();
         }
     } 

@@ -19,6 +19,14 @@ public class DoorOpen : MonoBehaviour
             {
                 SceneManager.LoadScene("Level2");
             }
+            if(currentScene.name == "Level2")
+            {
+                SceneManager.LoadScene("Level3");
+            }
+            if (currentScene.name == "Level3")
+            {
+                SceneManager.LoadScene("Level4");
+            }
         }
     }
 }
