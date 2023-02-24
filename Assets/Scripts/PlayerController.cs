@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     #region Animation Variables
     private Animator animationController;
     private bool facing_right;
+    [SerializeField]
+    private GameObject block;
     public bool chased;
     #endregion
     #endregion
@@ -105,6 +107,7 @@ public class PlayerController : MonoBehaviour
                     if (hit.transform.CompareTag("Item1"))
                     {
                         holding_item1 = true;
+                        block.SetActive(true);
                         Destroy(hit.transform.gameObject);
                         return;
                     }
@@ -121,11 +124,13 @@ public class PlayerController : MonoBehaviour
                         {
                             holding_item1 = hit.transform.GetComponent<ItemHolder>().HandleItem(item1);
                             Debug.Log("You placed an item " + !holding_item1);
+                            block.SetActive(false);
                             return;
                         }
                     }
                     UnityEngine.Vector3 temp = currDirection.normalized * 0.5f;
                     Object.Instantiate(item1, transform.position + temp, UnityEngine.Quaternion.identity);
+                    block.SetActive(false);
                     holding_item1 = false;
 
                 }
