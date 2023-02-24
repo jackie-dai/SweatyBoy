@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour
     private float patrolDistance;
     private Vector3 otherWaypoint;
     private Vector3 currentDestination;
-    private float distanceThreshold = 1f;
+    private float distanceThreshold = 0.2f;
     #endregion
     #region Enemy Animation 
     private Animator animationController;

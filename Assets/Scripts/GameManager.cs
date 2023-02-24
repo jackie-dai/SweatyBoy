@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     private void secondStart()
     {
         pressed_start = false;
-        SceneManager.LoadScene("Anders");
+        SceneManager.LoadScene("Level1");
     }
    
     public void MainMenu()
