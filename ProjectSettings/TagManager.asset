@@ -9,6 +9,7 @@ TagManager:
   - ItemSlot
   - Closet
   - BobBlock
+  - EndDoor
   layers:
   - Default
   - TransparentFX

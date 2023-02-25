@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
-
+    public static Scene currentScene;
     public static float timer = 0;
     public static bool pressed_start = false;
     #region Unity_Functions
@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         }
         DontDestroyOnLoad(gameObject);
-            
     }
 
     private void Update()
@@ -36,6 +35,7 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
+
     public void StartGame()
     {
         //Instantiate(pre_f);
@@ -55,5 +55,22 @@ public class GameManager : MonoBehaviour
     public void LoseGame()
     {
         SceneManager.LoadScene("DeathScreen");
+    }
+
+    public void WinGame()
+    {
+        SceneManager.LoadScene("Ending");
+    }
+
+    public void RestartLevel()
+    {
+        Debug.Log(GameManager.currentScene.name);
+        SceneManager.LoadScene(currentScene.name);
+    }
+
+    public void SetCurrentLevel(Scene scene)
+    {
+        currentScene = scene;
+        Debug.Log("Set: " + currentScene.name);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Enemy : MonoBehaviour
     #region Movement Variables
     [SerializeField]
     private float movementSpeed = 1.5f;
+    [SerializeField]
     private float patrolMovementSpeed = 1.5f;
     private float maxChaseMovementSpeed = 4f;
     private float elapsedChaseTime = 0;
@@ -137,8 +139,9 @@ public class Enemy : MonoBehaviour
         
         if (coll.gameObject.CompareTag("Player"))
         {
-            GameObject gm = GameObject.FindWithTag("GameController");
-            gm.GetComponent<GameManager>().LoseGame();
+            GameManager gm = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+            gm.SetCurrentLevel(SceneManager.GetActiveScene());
+            gm.LoseGame();
         }
     }
 

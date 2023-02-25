@@ -7,6 +7,9 @@ public class DetectionZone : MonoBehaviour
     #region Variables
     private Enemy enemy;
     private Animator animator;
+    private bool transformed = false;
+    [SerializeField]
+    public AudioSource growlSFX;
     #endregion
 
     void Awake()
@@ -21,6 +24,12 @@ public class DetectionZone : MonoBehaviour
         {
             enemy.DetectPlayer();
             enemy.GetPlayer(other.transform);
+            if (!transformed)
+            {
+                Debug.Log("SDF");
+                growlSFX.Play();
+                transformed = true;
+            }
             animator.SetTrigger("Transform");
             other.GetComponent<PlayerController>().chased = true;
         }
