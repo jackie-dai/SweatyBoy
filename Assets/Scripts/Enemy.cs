@@ -140,7 +140,7 @@ public class Enemy : MonoBehaviour
         if (coll.gameObject.CompareTag("Player"))
         {
             GameManager gm = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
-            gm.SetCurrentLevel(SceneManager.GetActiveScene());
+            GameManager.currentSceneString = SceneManager.GetActiveScene().name;
             gm.LoseGame();
         }
     }

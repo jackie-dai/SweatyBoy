@@ -7,17 +7,19 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
     public static Scene currentScene;
+    public static string currentSceneString;
     public static float timer = 0;
     public static bool pressed_start = false;
     #region Unity_Functions
 
     private void Awake()
     {
-        if(instance == null)
+        if(instance != null & instance != this)
+        {
+            Destroy(this);
+        } else
         {
             instance = this;
-        } else if(instance != this) {
-            Destroy(this.gameObject);
         }
         DontDestroyOnLoad(gameObject);
     }
@@ -64,13 +66,11 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        Debug.Log(GameManager.currentScene.name);
-        SceneManager.LoadScene(currentScene.name);
+        SceneManager.LoadScene(currentSceneString);
     }
 
     public void SetCurrentLevel(Scene scene)
     {
         currentScene = scene;
-        Debug.Log("Set: " + currentScene.name);
     }
 }
